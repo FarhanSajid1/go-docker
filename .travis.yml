@@ -1,0 +1,15 @@
+language: golang
+sudo: required
+services:
+    - docker
+
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t farhansajid2/go-compose-test .
+
+script:
+  - docker run farhansajid2/go-compose-test go test
+
+after_script:
+  - docker build -t farhansajid2/go-compose .
+  - docker push farhansajid2/go-compose
